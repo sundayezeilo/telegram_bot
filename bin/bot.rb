@@ -6,9 +6,6 @@ require 'httparty'
 require '../lib/scraper.rb'
 
 
-openweathermap_api_key = 'ee0d92f2309953f56ed99eb09e4e1159'
-telegram_api_token = '1195063539:AAHOylrLdphEK311AVP2DqcT-ZyQGUtSYds'
-
 def scraper(html)
   JSON.parse(html)
 end
