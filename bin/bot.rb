@@ -5,6 +5,8 @@ require 'json'
 require 'httparty'
 require '../lib/scraper.rb'
 
+openweathermap_api_key = 'YOUR OPENWEATHERMAP API KEY'
+telegram_api_token = 'YOUR TELEGRAM API KEY'
 
 def scraper(html)
   JSON.parse(html)
