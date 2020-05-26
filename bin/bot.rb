@@ -1,10 +1,10 @@
 require 'telegram/bot'
 require 'nokogiri'
 # require 'open-uri'
-require 'json'
 require 'httparty'
 require '../lib/scraper.rb'
 require '../lib/api_keys.rb'
+require 'country_lookup'
 
 def scraper(html)
   JSON.parse(html)
@@ -17,13 +17,13 @@ Telegram::Bot::Client.run(YOUR_TELEGRAM_API_TOKEN) do |bot|
     if message.text == '/start'
       if !chat_id_log[(message.chat.id).to_s]
         chat_id_log[(message.chat.id).to_s] = message.chat.id
-        bot.api.send_message(chat_id: message.chat.id, text: "Hello, #{message.from.first_name}\r\nEnter /weather <city> or /weather <city>,<country code> to get weather info")
+        bot.api.send_message(chat_id: message.chat.id, text: "Hello, #{message.from.first_name}\r\nEnter /weather <city> or /weather <city>,<country code> to get weather info\r\nSend /end to end the chat. Use /start to start again next time.")
       end
-    elsif message.text == '/stop'
+    elsif message.text == '/end'
       chat_id_log.delete((message.chat.id).to_s)
-      bot.api.send_message(chat_id: message.chat.id, text: "Bye, #{message.from.first_name}")
-    elsif message.text.match(/\A\/weather +/)   # matches weather plus one or more spaces, at the beginning of the string 
-      city = message.text.slice("/weather".length, message.text.length).strip
+      bot.api.send_message(chat_id: message.chat.id, text: "Bye, #{message.from.first_name}!")
+    elsif message.text.match(/\A\/weather +\w+/)   # matches weather plus one or more spaces at the start of a string, then one or more characters that follows
+      city = message.text.slice("/weather".length, message.text.length).lstrip
       if !city
         bot.api.send_message(chat_id: message.chat.id, text: "City not provided. Try again!")
       else
@@ -33,7 +33,7 @@ Telegram::Bot::Client.run(YOUR_TELEGRAM_API_TOKEN) do |bot|
         if weather["cod"] == "404" || weather["message"] == "city not found"
           bot.api.send_message(chat_id: message.chat.id, text: "City not found! Provide a valid city.")
         else
-          bot.api.send_message(chat_id: message.chat.id, text: "It's #{(weather["main"]["temp"] - 272.15).round}°C in #{weather["name"]}, #{weather["sys"]["country"]}.")
+          bot.api.send_message(chat_id: message.chat.id, text: "It's #{(weather["main"]["temp"] - 272.15).round}°C in #{weather["name"]}, #{Country.with_postal_code[weather["sys"]["country"]]}, with #{weather["weather"].first["description"]}.")
         end
       end
     else
