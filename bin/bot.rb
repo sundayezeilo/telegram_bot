@@ -12,7 +12,7 @@ def scraper(html)
 end
 
 def format_time(t_raw, timezone)
-  Time.at(t_raw, in: timezone).strftime("Local Time: %I:%M %p\r\nDate: %A, %d/%m/%Y\r\n")
+  Time.at(t_raw, in: timezone).strftime("Local Time: %I:%M %p\r\n%A, %d/%m/%Y\r\n")
 end
 
 def format_message(weather)
@@ -25,8 +25,8 @@ def format_message(weather)
 end
 
 def welcome_message
-  text = "\r\nEnter /weather <city> or /weather <city>,<country code> to get weather info"
-  text + "\r\nSend /end to end the chat. Use /start to start again next time."
+  "\r\nEnter /weather <city> or /weather <city>,<country code> to get weather info."\
+  "\r\nSend /end to end the chat. Use /start to start again next time."
 end
 
 chat_id_log = {}
