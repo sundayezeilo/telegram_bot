@@ -11,7 +11,9 @@ def scraper(html)
 end
 
 def format_time(t_raw)
-  Time.at(t_raw)
+  t = Time.at(t_raw).to_s
+  fmt = t.index('+') ? t.slice(t.index('+'), 3).to_i : t.slice(t.index('-'), 3).to_i
+  fmt.negative? ? t.slice(0, t.length - '+0100'.length) + 'UTC' + fmt.to_s : t.slice(0, t.length - '+0100'.length) + 'UTC' + '+' + fmt.to_s
 end
 
 def format_message(weather)
