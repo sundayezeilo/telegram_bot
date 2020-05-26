@@ -5,22 +5,24 @@ require 'httparty'
 require '../lib/scraper.rb'
 require '../lib/api_keys.rb'
 require 'country_lookup'
+require 'time'
 
 def scraper(html)
   JSON.parse(html)
 end
 
-def format_time(t_raw)
-  t = Time.at(t_raw).to_s
-  fmt = t.index('+') ? t.slice(t.index('+'), 3).to_i : t.slice(t.index('-'), 3).to_i
-  fmt.negative? ? t.slice(0, t.length - '+0100'.length) + 'UTC' + fmt.to_s : t.slice(0, t.length - '+0100'.length) + 'UTC' + '+' + fmt.to_s
+def format_time(t_raw, tz)
+  t = Time.at(t_raw, in:tz).to_s
+  utc = t.slice(t.length - "+0100".length, t.length)
+  utc = utc.index('+') ? utc.slice(utc.index('+'), 3).to_i : utc.slice(utc.index('-'), 3).to_i
+  utc.negative? ? t.slice(0, t.length - '-0100'.length) + 'UTC' + utc.to_s : t.slice(0, t.length - '+0100'.length) + 'UTC' + '+' + utc.to_s
 end
 
 def format_message(weather)
   city = weather['name']
   cloud_cond = weather['weather'].first['description']
   temp = (weather['main']['temp'] - 272.15).round
-  local_time = format_time(weather['dt'])
+  local_time = format_time(weather['dt'], weather["timezone"])
   country = Country.with_postal_code[weather['sys']['country']]
   "It's #{temp}°C in #{city}, #{country}, with #{cloud_cond}.\r\nLocal time: #{local_time}."
 end
