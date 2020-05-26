@@ -12,8 +12,7 @@ def scraper(html)
 end
 
 def format_time(t_raw, timezone)
-  t = Time.at(t_raw, in: timezone)
-  time_str = t.strftime("Local Time: %I:%M %p\r\nDate: %A, %d/%m/%Y\r\n")
+  Time.at(t_raw, in: timezone).strftime("Local Time: %I:%M %p\r\nDate: %A, %d/%m/%Y\r\n")
 end
 
 def format_message(weather)
