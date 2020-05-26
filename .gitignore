@@ -56,3 +56,4 @@ build-iPhoneSimulator/
 # .rubocop-https?--*
 
 lib/api_keys.rb
+lib/junk.rb

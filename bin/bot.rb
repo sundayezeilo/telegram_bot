@@ -12,10 +12,8 @@ def scraper(html)
 end
 
 def format_time(t_raw, timezone)
-  t = Time.at(t_raw, in: timezone).to_s
-  utc = t.slice(t.length - '+0100'.length, t.length)
-  utc = utc.index('+') ? utc.slice(utc.index('+'), 3).to_i : utc.slice(utc.index('-'), 3).to_i
-  utc.negative? ? t.slice(0, t.length - '-0100'.length) + 'UTC' + utc.to_s : t.slice(0, t.length - '+0100'.length) + 'UTC' + '+' + utc.to_s
+  t = Time.at(t_raw, in: timezone)
+  time_str = t.strftime("Local Time: %I:%M %p\r\nDate: %A, %d/%m/%Y\r\n")
 end
 
 def format_message(weather)
@@ -24,7 +22,7 @@ def format_message(weather)
   temp = (weather['main']['temp'] - 272.15).round
   local_time = format_time(weather['dt'], weather['timezone'])
   country = Country.with_postal_code[weather['sys']['country']]
-  "It's #{temp}°C in #{city}, #{country}, with #{cloud_cond}.\r\nLocal time: #{local_time}."
+  "It's #{temp}°C in #{city}, #{country}, with #{cloud_cond}.\r\n#{local_time}."
 end
 
 def welcome_message
