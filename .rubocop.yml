@@ -6,7 +6,6 @@ AllCops:
     - "Guardfile"
     - "Rakefile"
 
-DisplayCopNames: true
 Metrics/CyclomaticComplexity:
   Max: 20
 Metrics/ModuleLength:
