@@ -20,8 +20,12 @@ def format_message(weather)
   temp = (weather['main']['temp'] - 272.15).round
   local_time = format_time(weather['dt'])
   country = Country.with_postal_code[weather['sys']['country']]
-  text = "It's #{temp}°C in #{city}, #{country}, with #{cloud_cond}.\r\nLocal time: #{local_time}."
-  text  
+  "It's #{temp}°C in #{city}, #{country}, with #{cloud_cond}.\r\nLocal time: #{local_time}."
+end
+
+def welcome_message
+  text = "\r\nEnter /weather <city> or /weather <city>,<country code> to get weather info"
+  text + "\r\nSend /end to end the chat. Use /start to start again next time."
 end
 
 chat_id_log = {}
@@ -31,7 +35,8 @@ Telegram::Bot::Client.run(YOUR_TELEGRAM_API_TOKEN) do |bot|
     if message.text == '/start'
       unless chat_id_log[message.chat.id.to_s]
         chat_id_log[message.chat.id.to_s] = message.chat.id
-        bot.api.send_message(chat_id: message.chat.id, text: "Hello, #{message.from.first_name}\r\nEnter /weather <city> or /weather <city>,<country code> to get weather info\r\nSend /end to end the chat. Use /start to start again next time.")
+        text = welcome_message
+        bot.api.send_message(chat_id: message.chat.id, text: "Hello, #{message.from.first_name}#{text}")
       end
     elsif message.text == '/end'
       chat_id_log.delete(message.chat.id.to_s)
