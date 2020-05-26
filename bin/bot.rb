@@ -11,6 +11,10 @@ def scraper(html)
   JSON.parse(html)
 end
 
+def format_time(t_raw)  
+  Time.at(t_raw)
+end
+
 chat_id_log = {}
 
 Telegram::Bot::Client.run(YOUR_TELEGRAM_API_TOKEN) do |bot|
@@ -38,8 +42,7 @@ Telegram::Bot::Client.run(YOUR_TELEGRAM_API_TOKEN) do |bot|
           city = weather["name"]
           cloud_cond = weather["weather"].first["description"]
           temp = (weather["main"]["temp"] - 272.15).round
-          time = weather["dt"]
-          local_time = Time.at(time)
+          local_time = format_time(weather["dt"])
           country = Country.with_postal_code[weather["sys"]["country"]]
           text = "It's #{temp}°C in #{city}, #{country}, with #{cloud_cond},\r\nLocal time: #{local_time}."
 
