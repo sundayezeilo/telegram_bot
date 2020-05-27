@@ -15,7 +15,6 @@
 - All the gems required to run this program are already provided in the Gemlock file. Just Open your terminal and navigate to the project directory, then run the command``` bundle install ```to install them. 
 
 ## Getting started
-- To run the code, rename the "api_keys_sample.rb" in the project directory to "api_keys.rb". In the file, provide the required keys accordingly by setting:``` OPENWEATHERMAP_API_KEY = "API KEY" ```and``` TELEGRAM_API_TOKEN = "API TOKEN" ```.
 - Open your Linux terminal and navigate to bin folder in the project directory.
 - Type and run the following command:``` ruby bot.rb ```.
 
