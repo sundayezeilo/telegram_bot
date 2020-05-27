@@ -19,10 +19,10 @@ def format_message(weather)
   city = weather['name']
   cloud_cond = weather['weather'].first['description'].split(' ').map(&:capitalize).join(' ')
   temp_cel = (weather['main']['temp'] - 272.15).round
-  temp_fah = ((weather['main']['temp'] - 272.15)*1.8 + 32).round
-  pressure = weather["main"]["pressure"]
-  humidity = weather["main"]["humidity"]
-  wind_speed = weather["wind"]["speed"]
+  temp_fah = ((weather['main']['temp'] - 272.15) * 1.8 + 32).round
+  pressure = weather['main']['pressure']
+  humidity = weather['main']['humidity']
+  wind_speed = weather['wind']['speed']
   local_time = format_time(weather['dt'], weather['timezone'])
   country = Country.with_postal_code[weather['sys']['country']]
 
