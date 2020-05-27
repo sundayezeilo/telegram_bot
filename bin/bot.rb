@@ -18,8 +18,8 @@ end
 def format_message(weather)
   city = weather['name']
   cloud_cond = weather['weather'].first['description'].split(' ').map(&:capitalize).join(' ')
-  temp_cel = (weather['main']['temp'] - 272.15).round
-  temp_fah = ((weather['main']['temp'] - 272.15) * 1.8 + 32).round
+  temp_cel = (weather['main']['temp'] - 273.15).round
+  temp_fah = ((weather['main']['temp'] - 273.15) * 1.8 + 32).round
   pressure = weather['main']['pressure']
   humidity = weather['main']['humidity']
   wind_speed = weather['wind']['speed']
@@ -43,7 +43,7 @@ end
 
 chat_id_log = {}
 
-Telegram::Bot::Client.run(YOUR_TELEGRAM_API_TOKEN) do |bot|
+Telegram::Bot::Client.run(TELEGRAM_API_TOKEN) do |bot|
   bot.listen do |message|
     if message.text == '/start'
       unless chat_id_log[message.chat.id.to_s]
@@ -59,7 +59,7 @@ Telegram::Bot::Client.run(YOUR_TELEGRAM_API_TOKEN) do |bot|
       if !city
         bot.api.send_message(chat_id: message.chat.id, text: 'City not provided. Try again!')
       else
-        url = 'http://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + YOUR_OPENWEATHERMAP_API_KEY
+        url = 'http://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + OPENWEATHERMAP_API_KEY
         weather_html = HTTParty.get(url).to_s
         weather = scraper(weather_html)
         if weather['cod'] == '404' || weather['message'] == 'city not found'

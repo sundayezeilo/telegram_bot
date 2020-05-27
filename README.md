@@ -2,17 +2,33 @@
 
 ## Ruby Capstone Project
 
-> This project implements enumerable methods in Ruby. Return values of those methods are those returned by the default ruby enumerable methods. Code usage has also been provided in this document in the "Code usage goes here" section.
+> This project is my Ruby Capstone Project. It implements a weather bot for Telegram app. A Telegram user can chat with the bot, request for weather update for any given city around the world while the weather parameters are returned by the bot.
 
-> The project description can be found [here](https://github.com/TheOdinProject/curriculum/blob/master/ruby_programming/archive/basic_ruby/project_advanced_building_blocks.md#project-2-enumerable-methods).
+> The project description can be found here: [Build your own bot](https://www.notion.so/Build-your-own-bot-ebd0d7ac5da240e5987720bdc83f38fa).
+
+##  Requirements
+- ruby gems
+- Telegram App
+- Good internet connection
+
+##  Required gems
+- All the gems required to run this program are already provided in the Gemlock file. Just Open your terminal and navigate to the project directory, then run the command``` bundle install ```to install them. 
+
+## Getting started
+- To run the code, rename the "api_keys_sample.rb" in the project directory to "api_keys.rb". In the file, provide the required keys accordingly by setting:``` OPENWEATHERMAP_API_KEY = "API KEY" ```and``` TELEGRAM_API_TOKEN = "API TOKEN" ```.
+- Open your Linux terminal and navigate to bin folder in the project directory.
+- Type and run the following command:``` ruby bot.rb ```.
+
+## Bot Instructions
+- A Telegram account is required to used this bot.
+- Open the Telegram app and search for ZeiloBot, a bot created for this project.
+- Send``` /start ```to start a conversation with the bot.
+- The bot will reply with a welcome message and the instructions for the bot.
+- You can send``` /weather <city name> ```or``` /weather <city name>,<country code> ```to retrieve weather information for the location you sent. Example: ``` London ```for London, or``` /weather Manchester,UK ```for Manchester, United Kingdom.
+The city name can also contain spaces as in: ``` /weather rio de janeiro ``` or ``` /weather rio de janeiro, BR ```for Rio de Janeiro, Brazil.
+- To end a chat, send  ``` /end ```.
 
 ## Automated Test Case
-- Test automation provided for this project is based on RSpec tool. The test cases are found in the 'enumerable_methods_spec.rb' file which resides in 'spec' folder, a sub folder in the project directory.
-- To run the test cases, open your terminal and navigate to the aboved mentioned directory.
-- ToRun the 'enumerable_methods_spec.rb' file by typing the following:
-- rspec enumerable_methods_spec.rb from the specific directory
-- Hit 'Enter' key on the keyboard
-- When the available test cases are evaluated, corresponding messages are retured.
 
 ## Built With
 
@@ -20,14 +36,7 @@
 
 ## Live Demo
 
-[![Run on Repl.it](https://repl.it/badge/github/ezeilo-su/enumerable_methods_in_ruby)](https://repl.it/github/ezeilo-su/enumerable_methods_in_ruby)
-
 ### Code usage goes here:
-
-```Ruby
-# /bin/bot.rb
-
-```
 
 ## Author
 
@@ -39,9 +48,9 @@
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!
+Contributions, issues and feature requests will be appriciated.
 
-Feel free to check the [issues page](https://github.com/ezeilo-su/enumerable_methods_in_ruby/issues)
+Feel free to check the [issues page](https://github.com/ezeilo-su/telegram_bot/issues)
 
 ## Show your support
 
