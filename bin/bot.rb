@@ -12,16 +12,28 @@ def scraper(html)
 end
 
 def format_time(t_raw, timezone)
-  Time.at(t_raw, in: timezone).strftime("Local Time: %I:%M %p\r\n%A, %d/%m/%Y\r\n")
+  Time.at(t_raw, in: timezone).strftime("%I:%M %p\r\n%A, %d/%m/%Y\r\n")
 end
 
 def format_message(weather)
   city = weather['name']
-  cloud_cond = weather['weather'].first['description']
-  temp = (weather['main']['temp'] - 272.15).round
+  cloud_cond = weather['weather'].first['description'].split(' ').map(&:capitalize).join(' ')
+  temp_cel = (weather['main']['temp'] - 272.15).round
+  temp_fah = ((weather['main']['temp'] - 272.15)*1.8 + 32).round
+  pressure = weather["main"]["pressure"]
+  humidity = weather["main"]["humidity"]
+  wind_speed = weather["wind"]["speed"]
   local_time = format_time(weather['dt'], weather['timezone'])
   country = Country.with_postal_code[weather['sys']['country']]
-  "It's #{temp}°C in #{city}, #{country}, with #{cloud_cond}.\r\n#{local_time}."
+
+  "#{city}, #{country}"\
+  "\r\nLocal Time: #{local_time}"\
+  "\r\nWeather:"\
+  "\r\nTemperature: #{temp_cel}°C | #{temp_fah}°F"\
+  "\r\nCloud Condition: #{cloud_cond}"\
+  "\r\nPressure: #{pressure} hPa"\
+  "\r\nHumidity: #{humidity}%"\
+  "\r\nWind Speed: #{wind_speed} m/s"
 end
 
 def welcome_message
