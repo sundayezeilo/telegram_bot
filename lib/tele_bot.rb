@@ -30,6 +30,7 @@ end
 class Telebot
   def initialize(bot_api_token)
     @bot_api_token = bot_api_token
+    @chat_id_log = {}
   end
 
   def welcome_message
@@ -39,19 +40,17 @@ class Telebot
 
   private :welcome_message
 
-  @@chat_id_log = {}
-
   def run
     Telegram::Bot::Client.run(@bot_api_token) do |bot|
       bot.listen do |message|
         if message.text == '/start'
-          unless @@chat_id_log[message.chat.id.to_s]
-            @@chat_id_log[message.chat.id.to_s] = message.chat.id
+          unless @chat_id_log[message.chat.id.to_s]
+            @chat_id_log[message.chat.id.to_s] = message.chat.id
             text = welcome_message
             bot.api.send_message(chat_id: message.chat.id, text: "Hello, #{message.from.first_name}#{text}")
           end
         elsif message.text == '/end'
-          @@chat_id_log.delete(message.chat.id.to_s)
+          @chat_id_log.delete(message.chat.id.to_s)
           bot.api.send_message(chat_id: message.chat.id, text: "Bye, #{message.from.first_name}!")
         elsif message.text.match(%r{\A/weather +\w+}) # matches weather plus one or more spaces at the start of a string, then one or more characters that follows
           city = message.text.slice('/weather'.length, message.text.length).lstrip
