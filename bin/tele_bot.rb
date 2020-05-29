@@ -1,45 +1,12 @@
-require 'telegram/bot'
+
 require 'nokogiri'
 # require 'open-uri'
 require 'httparty'
-require '../lib/scraper.rb'
-require '../lib/api_keys.rb'
+require 'telegram/bot'
 require 'country_lookup'
-require 'time'
-
-def scraper(html)
-  JSON.parse(html)
-end
-
-def format_time(t_raw, timezone)
-  Time.at(t_raw, in: timezone).strftime("%I:%M %p\r\n%A, %B %d, %Y\r\n")
-end
-
-def format_message(weather)
-  city = weather['name']
-  cloud_cond = weather['weather'].first['description'].split(' ').map(&:capitalize).join(' ')
-  temp_cel = (weather['main']['temp'] - 273.15).round
-  temp_fah = ((weather['main']['temp'] - 273.15) * 1.8 + 32).round
-  pressure = weather['main']['pressure']
-  humidity = weather['main']['humidity']
-  wind_speed = weather['wind']['speed']
-  local_time = format_time(weather['dt'], weather['timezone'])
-  country = Country.with_postal_code[weather['sys']['country']]
-
-  "#{city}, #{country}"\
-  "\r\nLocal Time: #{local_time}"\
-  "\r\nWeather:"\
-  "\r\nTemperature: #{temp_cel}°C | #{temp_fah}°F"\
-  "\r\nCloud Condition: #{cloud_cond}"\
-  "\r\nPressure: #{pressure} hPa"\
-  "\r\nHumidity: #{humidity}%"\
-  "\r\nWind Speed: #{wind_speed} m/s"
-end
-
-def welcome_message
-  "\r\nEnter /weather <city> or /weather <city>,<country code> to get weather info."\
-  "\r\nSend /end to end the chat. Use /start to start again next time."
-end
+require_relative '../lib/scraper.rb'
+require_relative '../lib/api_keys.rb'
+require_relative '../lib/output.rb'
 
 chat_id_log = {}
 
@@ -61,12 +28,12 @@ Telegram::Bot::Client.run(TELEGRAM_API_TOKEN) do |bot|
       else
         url = 'http://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + OPENWEATHERMAP_API_KEY
         weather_html = HTTParty.get(url).to_s
-        weather = scraper(weather_html)
+        weather = Scraper.parse_json(weather_html)
         if weather['cod'] == '404' || weather['message'] == 'city not found'
           bot.api.send_message(chat_id: message.chat.id, text: 'City not found! Provide a valid city.')
         else
           chat_id = message.chat.id
-          text = format_message(weather)
+          text = Format.output_message(weather)
           bot.api.send_message(chat_id: chat_id, text: text)
         end
       end
