@@ -1,6 +1,6 @@
 require 'time'
 
-module Format  
+module Format
   def self.output_time(t_raw, timezone)
     Time.at(t_raw, in: timezone).strftime("%I:%M %p\r\n%A, %B %d, %Y\r\n")
   end
