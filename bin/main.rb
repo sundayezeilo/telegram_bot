@@ -13,4 +13,3 @@ def run_bot(token)
 end
 
 run_bot(TELEGRAM_API_TOKEN)
-
