@@ -5,7 +5,8 @@ require 'country_lookup'
 
 class BotUser
   def initialize(bot, message)
-    @bot, @message = bot, message    
+    @bot = bot
+    @message = message
   end
 
   def send_welcome_message
@@ -64,7 +65,8 @@ class MessageHandler
   attr_accessor :bot, :message
 
   def initialize(bot, message)
-    @bot, @message = bot, message
+    @bot = bot
+    @message = message
   end
 
   def handle_message

@@ -6,7 +6,6 @@ module Scraper
   end
 end
 
-
 module Format
   def self.parse_time(t_raw, timezone)
     Time.at(t_raw, in: timezone).strftime("%I:%M %p\r\n%A, %B %d, %Y\r\n")
