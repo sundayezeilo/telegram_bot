@@ -13,7 +13,7 @@ class BotUser
     @bot.api.send_message(chat_id: @message.chat.id, text: "Hello, #{@message.from.first_name}#{welcome_message}")
   end
 
-  def send_error_message
+  def reply_invalid_format
     @bot.api.send_message(chat_id: @message.chat.id, text: "Invalid input format. Try again!\r\nEnter /weather <city> or /weather <city>,<country code> to get weather info")
   end
 
@@ -76,7 +76,7 @@ class MessageHandler
     when '/help'
       HelpMessage.new(bot: @bot, message: @message).send_response
     else
-      BotUser.new(bot: @bot, message: @message).send_error_message
+      BotUser.new(bot: @bot, message: @message).reply_invalid_format
     end
   end
 end
