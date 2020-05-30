@@ -4,7 +4,7 @@ require 'httparty'
 require 'country_lookup'
 
 class BotUser
-  def initialize(bot, message)
+  def initialize(bot:, message:)
     @bot = bot
     @message = message
   end
@@ -24,45 +24,41 @@ class BotUser
 end
 
 class WeatherInfo
-  attr_accessor :bot, :message
-
   def initialize(bot:, message:)
-    self.bot = bot
-    self.message = message
+    @bot = bot
+    @message = message
   end
 
   def send_response
-    city = message.text.slice('/weather'.length, message.text.length).lstrip
+    city = @message.text.slice('/weather'.length, @message.text.length).lstrip
     if !city
-      bot.api.send_message(chat_id: message.chat.id, text: 'City not provided. Try again!')
+      @bot.api.send_message(chat_id: @message.chat.id, text: 'City not provided. Try again!')
     else
       url = 'http://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + OPENWEATHERMAP_API_KEY
       weather_html = HTTParty.get(url).to_s
       weather = Scraper.parse_json(weather_html)
       if weather['cod'] == '404' || weather['message'] == 'city not found'
-        bot.api.send_message(chat_id: message.chat.id, text: 'City not found! Provide a valid city.')
+        @bot.api.send_message(chat_id: @message.chat.id, text: 'City not found! Provide a valid city.')
       else
-        bot.api.send_message(chat_id: message.chat.id, text: Format.output_message(weather))
+        @bot.api.send_message(chat_id: @message.chat.id, text: Format.output_message(weather))
       end
     end
   end
 end
 
 class HelpMessage
-  attr_accessor :bot, :message
-
   def initialize(bot:, message:)
-    self.bot = bot
-    self.message = message
+    @bot = bot
+    @message = message
   end
 
   def send_response
-    bot.api.send_message(chat_id: message.chat.id, text: 'help is on the way')
+    @bot.api.send_message(chat_id: @message.chat.id, text: 'help is on the way')
   end
 end
 
 class MessageHandler
-  attr_accessor :bot, :message
+  attr_reader :bot, :message
 
   def initialize(bot, message)
     @bot = bot
@@ -72,7 +68,7 @@ class MessageHandler
   def handle_message
     case @message.text
     when '/start'
-      BotUser.new(@bot, @message).send_welcome_message
+      BotUser.new(bot: @bot, message: @message).send_welcome_message
     when '/end'
       @bot.api.send_message(chat_id: @message.chat.id, text: "Bye, #{@message.from.first_name}!")
     when %r{\A/weather +\w+}
@@ -80,7 +76,7 @@ class MessageHandler
     when '/help'
       HelpMessage.new(bot: @bot, message: @message).send_response
     else
-      BotUser.new(@bot, @message).send_error_message
+      BotUser.new(bot: @bot, message: @message).send_error_message
     end
   end
 end
