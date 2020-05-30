@@ -71,6 +71,7 @@ class MessageHandler
       BotUser.new(bot: @bot, message: @message).send_welcome_message
     when '/end'
       @bot.api.send_message(chat_id: @message.chat.id, text: "Bye, #{@message.from.first_name}!")
+      'ended'
     when %r{\A/weather +\w+}
       WeatherInfo.new(bot: @bot, message: @message).send_response
     when '/help'
