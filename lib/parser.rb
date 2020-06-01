@@ -1,4 +1,5 @@
 require 'json'
+require 'httparty'
 
 module Scraper
   def self.parse_json(html)

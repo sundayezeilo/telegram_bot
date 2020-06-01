@@ -1,6 +1,5 @@
 require 'time'
-require 'nokogiri'
-require 'httparty'
+require 'net/http'
 require 'country_lookup'
 
 class BotUser
@@ -34,8 +33,8 @@ class WeatherInfo
     if !city
       @bot.api.send_message(chat_id: @message.chat.id, text: 'City not provided. Try again!')
     else
-      url = 'http://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + OPENWEATHERMAP_API_KEY
-      weather_html = HTTParty.get(url).to_s
+      url = URI('http://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + OPENWEATHERMAP_API_KEY)
+      weather_html = Net::HTTP.get(url) 
       weather = Scraper.parse_json(weather_html)
       if weather['cod'] == '404' || weather['message'] == 'city not found'
         @bot.api.send_message(chat_id: @message.chat.id, text: 'City not found! Provide a valid city.')
@@ -71,7 +70,6 @@ class MessageHandler
       BotUser.new(bot: @bot, message: @message).send_welcome_message
     when '/end'
       @bot.api.send_message(chat_id: @message.chat.id, text: "Bye, #{@message.from.first_name}!")
-      'ended'
     when %r{\A/weather +\w+}
       WeatherInfo.new(bot: @bot, message: @message).send_response
     when '/help'
