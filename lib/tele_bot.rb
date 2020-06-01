@@ -34,7 +34,7 @@ class WeatherInfo
       @bot.api.send_message(chat_id: @message.chat.id, text: 'City not provided. Try again!')
     else
       url = URI('http://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + OPENWEATHERMAP_API_KEY)
-      weather_html = Net::HTTP.get(url) 
+      weather_html = Net::HTTP.get(url)
       weather = Scraper.parse_json(weather_html)
       if weather['cod'] == '404' || weather['message'] == 'city not found'
         @bot.api.send_message(chat_id: @message.chat.id, text: 'City not found! Provide a valid city.')
