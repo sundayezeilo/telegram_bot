@@ -16,7 +16,7 @@
 
 ## Getting started
 - Open your Linux terminal and navigate to bin folder in the project directory.
-- Type and run the following command:``` ruby tele_bot.rb ```.
+- Type and run the following command:``` ruby main.rb ```.
 
 ## Bot Instructions
 - A Telegram account is required to used this bot.
