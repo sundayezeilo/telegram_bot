@@ -57,4 +57,4 @@ build-iPhoneSimulator/
 
 lib/junk.rb
 lib/telegram_api_key.rb
-/Gemfile.lock
+Gemfile.lock
