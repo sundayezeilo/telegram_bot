@@ -2,9 +2,7 @@ require_relative '../lib/parser.rb'
 require_relative '../lib/api_keys.rb'
 require_relative '../lib/tele_bot.rb'
 require 'telegram/bot'
-require "vcr"
 require_relative 'spec_helper'
-
 
 describe BotUser do
   it 'fires run on telegram bot' do
