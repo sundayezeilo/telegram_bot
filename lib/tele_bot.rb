@@ -24,7 +24,7 @@ class WeatherInfo
   end
 
   def send_response
-    city = @message.text.slice('/weather'.length, @message.text.length).lstrip
+    city = @message.text.slice('/weather'.length, @message.text.length).strip
     if !city
       @bot.api.send_message(chat_id: @message.chat.id, text: 'City not provided. Try again!')
     else

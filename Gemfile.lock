@@ -91,6 +91,7 @@ DEPENDENCIES
   gemspec
   httparty
   rspec
+  rspec-mocks
   rubocop
   telegram-bot-ruby
   vcr

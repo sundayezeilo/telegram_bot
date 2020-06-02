@@ -57,3 +57,4 @@ build-iPhoneSimulator/
 
 lib/junk.rb
 /api_keys_sample.rb
+lib/telegram_api_key.rb
