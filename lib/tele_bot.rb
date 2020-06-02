@@ -8,20 +8,26 @@ class BotUser
   end
 
   def send_welcome_message(message)
-    text = "Hello, #{message.from.first_name}\r\n#{HelpMessage.new(bot: @bot, message: message).help_msg}"
+    text = "Hello, #{message.from.first_name}\r\n#{HelpMessage.new(user: self, message: message).help_msg}"
     @bot.api.send_message(chat_id: message.chat.id, text: text)
   end
 
   def reply_invalid_format(message)
-    text = "Invalid input format. Try again!\r\n" + HelpMessage.new(bot: @bot, message: message).help_msg
+    text = "Invalid input format. Try again!\r\n" + HelpMessage.new(user: self, message: message).help_msg
     @bot.api.send_message(chat_id: message.chat.id, text: text)
   end
+
+  def send_goodbye(message)
+    @bot.api.send_message(chat_id: message.chat.id, text: "Bye, #{message.from.first_name}!")
+  end
+
+  attr_reader :bot
 end
 
 class WeatherInfo
-  def initialize(bot:, message:)
-    @bot = bot
+  def initialize(user:, message:)
     @message = message
+    @bot = user.bot
   end
 
   def send_response
@@ -42,8 +48,8 @@ class WeatherInfo
 end
 
 class HelpMessage
-  def initialize(bot:, message:)
-    @bot = bot
+  def initialize(user:, message:)
+    @bot = user.bot
     @message = message
   end
 
@@ -70,11 +76,11 @@ class MessageHandler
     when '/start'
       @user.send_welcome_message(@message)
     when '/end'
-      @bot.api.send_message(chat_id: @message.chat.id, text: "Bye, #{@message.from.first_name}!")
+      @user.send_goodbye(@message)
     when %r{\A/weather +\w+}
-      WeatherInfo.new(bot: @bot, message: @message).send_response
+      WeatherInfo.new(user: @user, message: @message).send_response
     when '/help'
-      HelpMessage.new(bot: @bot, message: @message).send_response
+      HelpMessage.new(user: @user, message: @message).send_response
     else
       @user.reply_invalid_format(@message)
     end
