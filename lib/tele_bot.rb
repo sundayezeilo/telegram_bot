@@ -3,17 +3,18 @@ require 'net/http'
 require 'country_lookup'
 
 class BotUser
-  def initialize(bot:, message:)
+  def initialize(bot)
     @bot = bot
-    @message = message
   end
 
-  def send_welcome_message
-    @bot.api.send_message(chat_id: @message.chat.id, text: "Hello, #{@message.from.first_name}\r\n#{HelpMessage.new(bot: @bot, message: @message).help_msg}")
+  def send_welcome_message(message)
+    text = "Hello, #{message.from.first_name}\r\n#{HelpMessage.new(bot: @bot, message: message).help_msg}"
+    @bot.api.send_message(chat_id: message.chat.id, text: text)
   end
 
-  def reply_invalid_format
-    @bot.api.send_message(chat_id: @message.chat.id, text: "Invalid input format. Try again!\r\n" + HelpMessage.new(bot: @bot, message: @message).help_msg)
+  def reply_invalid_format(message)
+    text = "Invalid input format. Try again!\r\n" + HelpMessage.new(bot: @bot, message: message).help_msg
+    @bot.api.send_message(chat_id: message.chat.id, text: text)
   end
 end
 
@@ -57,17 +58,17 @@ class HelpMessage
 end
 
 class MessageHandler
-  attr_reader :bot, :message
+  attr_reader :user, :message
 
-  def initialize(bot, message)
-    @bot = bot
+  def initialize(user, message)
+    @user = user
     @message = message
   end
 
   def handle_message
     case @message.text
     when '/start'
-      BotUser.new(bot: @bot, message: @message).send_welcome_message
+      @user.send_welcome_message(@message)
     when '/end'
       @bot.api.send_message(chat_id: @message.chat.id, text: "Bye, #{@message.from.first_name}!")
     when %r{\A/weather +\w+}
@@ -75,7 +76,7 @@ class MessageHandler
     when '/help'
       HelpMessage.new(bot: @bot, message: @message).send_response
     else
-      BotUser.new(bot: @bot, message: @message).reply_invalid_format
+      @user.reply_invalid_format(@message)
     end
   end
 end

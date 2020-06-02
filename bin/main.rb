@@ -9,7 +9,8 @@ class TeleBot
   def run_bot(token)
     Telegram::Bot::Client.run(token) do |bot|
       bot.listen do |message|
-        MessageHandler.new(bot, message).handle_message
+        user = BotUser.new(bot)
+        MessageHandler.new(user, message).handle_message
       end
     end
   end
