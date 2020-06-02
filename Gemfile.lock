@@ -14,7 +14,6 @@ GEM
       thread_safe (~> 0.3, >= 0.3.1)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
-    colorize (0.8.1)
     concurrent-ruby (1.1.6)
     country_lookup (0.0.3)
     descendants_tracker (0.0.4)
@@ -39,16 +38,12 @@ GEM
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2020.0512)
-    mini_portile2 (2.4.0)
     minitest (5.14.1)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
-    nokogiri (1.10.9)
-      mini_portile2 (~> 2.4.0)
     parallel (1.19.1)
     parser (2.7.1.2)
       ast (~> 2.4.0)
-    rack (1.6.13)
     rainbow (3.0.0)
     rake (10.5.0)
     rexml (3.2.4)
@@ -92,12 +87,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  colorize
   country_lookup
   gemspec
   httparty
-  nokogiri
-  rack (~> 1.1)
   rspec
   rubocop
   telegram-bot-ruby

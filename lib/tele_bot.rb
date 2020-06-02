@@ -9,16 +9,11 @@ class BotUser
   end
 
   def send_welcome_message
-    @bot.api.send_message(chat_id: @message.chat.id, text: "Hello, #{@message.from.first_name}#{welcome_message}")
+    @bot.api.send_message(chat_id: @message.chat.id, text: "Hello, #{@message.from.first_name}\r\n#{HelpMessage.new(bot: @bot, message: @message).help_msg}")
   end
 
   def reply_invalid_format
-    @bot.api.send_message(chat_id: @message.chat.id, text: "Invalid input format. Try again!\r\nEnter /weather <city> or /weather <city>,<country code> to get weather info")
-  end
-
-  def welcome_message
-    "\r\nEnter /weather <city> or /weather <city>,<country code> to get weather info."\
-    "\r\nSend /end to end the chat. Use /start to start again next time."
+    @bot.api.send_message(chat_id: @message.chat.id, text: "Invalid input format. Try again!\r\n" + HelpMessage.new(bot: @bot, message: @message).help_msg)
   end
 end
 
@@ -52,7 +47,12 @@ class HelpMessage
   end
 
   def send_response
-    @bot.api.send_message(chat_id: @message.chat.id, text: 'help is on the way')
+    @bot.api.send_message(chat_id: @message.chat.id, text: help_msg)
+  end
+
+  def help_msg
+    "\r\nEnter /weather <city> or /weather <city>,<country code> to get weather info."\
+    "\r\nSend /end to end the chat. Use /start to start again next time."
   end
 end
 
