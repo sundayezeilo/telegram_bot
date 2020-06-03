@@ -6,7 +6,6 @@ require_relative 'spec_helper'
 
 RSpec.describe 'BotUser' do
   describe '#send_welcome_message' do
-
     let(:mock_bot) { double }
     let(:mock_message) { double }
     let(:mock_chat) { double }
