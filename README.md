@@ -15,6 +15,8 @@
 - All the gems required to run this program are already provided in the Gemlock file. Just Open your terminal and navigate to the project directory, then run the command``` bundle install ```to install them. 
 
 ## Getting started
+- Before running the code, rename the file "env_sample.rb" with "env.rb"
+- Go to my Google Drive (https://drive.google.com/file/d/1US2cxcIZ1A3FuVHZ8ZmHAs8DvIkqjQpW/view?usp=sharing) and copy the content of the text file and paste it inside of env.rb file in the main project directory.
 - Open your Linux terminal and navigate to bin folder in the project directory.
 - Type and run the following command:``` ruby main.rb ```.
 
